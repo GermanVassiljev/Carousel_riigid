@@ -29,22 +29,23 @@ namespace Carousel_riigid
             string dir_FilePath = Path.Combine(path, filename);
             string dir_Text = File.ReadAllText(path);
             string[] dir = dir_Text.Split(';');
+            int length = dir.Length;
             string direct;
-            string[] linnad_riigid = new string[dir.Length];
-            for (int i = 0; i < dir.Length; i++)
+            string[] linnad_riigid;
+            //for (int i = 0; i < dir.Length; i++)
+            //{
+            //    direct = dir[i];
+            //    //linnad_riigid.SetValue(direct.Split(':'), i);
+            //    linnad_riigid = direct.Split(':');
+            //}            
+
+
+
+
+            for (int i = 0; i < length - 1 ; i++)
             {
-                direct = dir[i];
-                //linnad_riigid.SetValue(direct.Split(':'), i);
-                linnad_riigid = direct.Split(':');
-            }            
-
-
-
-
-            for (int i = 1; i <=linnad_riigid.Length ; i++)
-            {
-                
-
+                string rnd = dir[i];
+                linnad_riigid = rnd.Split(':');
                 var Page = new ContentPage
                 {
                     TabIndex = i,
@@ -55,7 +56,7 @@ namespace Carousel_riigid
                             new Label
                             {
                                 FontSize= 20,
-                                Text = linnad_riigid[i]
+                                Text = linnad_riigid[0]
                             },
                             new Button
                             {
