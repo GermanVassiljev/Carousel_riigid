@@ -4,15 +4,18 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using Xamarin.Forms;
+using System.Runtime.CompilerServices;
+using Xamarin.Essentials;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Carousel_riigid
 {
     public class Carousel : CarouselPage
     {
+        string text = "Moskva:Venemaa;" + "London:Suurbritannia;" + "Stockholm:Rootsi;";
+        string filename = "Riigid_pealinnad.txt";
         public Carousel()
         {
-            string filename = "Riigid_pealinnad.txt";
-            string text = "Moskva;Venemaa\n" + "London;Suurbritannia\n" + "Stockholm;Rootsi";
 
             // Get the path to the Documents folder for the app
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), filename);
@@ -22,23 +25,29 @@ namespace Carousel_riigid
 
             // Write the text to the file
             File.WriteAllText(path, text);
-            var pealinnad = new Dictionary<int, string>()
+
+            string dir_FilePath = Path.Combine(path, filename);
+            string dir_Text = File.ReadAllText(path);
+            string[] dir = dir_Text.Split(';');
+            string direct;
+            string[] linnad_riigid = new string[dir.Length];
+            for (int i = 0; i < dir.Length; i++)
             {
-                {1,"Moskva"},
-                { 2,"Stockholm"},
-                { 3, "London" }
-            };
-            var riigid = new Dictionary<int, string>()
+                direct = dir[i];
+                //linnad_riigid.SetValue(direct.Split(':'), i);
+                linnad_riigid = direct.Split(':');
+            }            
+
+
+
+
+            for (int i = 1; i <=linnad_riigid.Length ; i++)
             {
-                {1, "Venemaa" },
-                { 2, "Rootsi" },
-                {3, "Suurbritannia" }
-            };
-            for (int i = 1; i <= 3; i++)
-            {
+                
+
                 var Page = new ContentPage
                 {
-                    TabIndex = i,                   
+                    TabIndex = i,
                     Content = new StackLayout
                     {
                         Children =
@@ -46,26 +55,47 @@ namespace Carousel_riigid
                             new Label
                             {
                                 FontSize= 20,
-                                Text = File.ReadAllText(path)
-                            },
-                            new Editor
-                            {
-                                Placeholder = "Riig"
+                                Text = linnad_riigid[i]
                             },
                             new Button
                             {
-                                BackgroundColor = Color.DarkOrange,                                
-                            }                            
+                                BackgroundColor = Color.DarkOrange,
+                            }
                         }
                     }
+
                 };
                 Children.Add(Page);
-                var editor = ((StackLayout)Page.Content).Children[1] as Editor;
-                
+                //var editor = ((StackLayout)Page.Content).Children[1] as Editor;
+
             }
 
-            
-            
+
+
+
+
+        }
+        private string ReadLine(int arv_leht, string path)
+        {
+            using (StreamReader reader = new StreamReader(path))
+            {
+                for (int i = 1; i <= arv_leht; i++)
+                {
+                    if (reader.EndOfStream)
+                    {
+                        break;
+                    }
+                    if (i == arv_leht)
+                    {
+                        return reader.ReadLine();
+                    }
+                    else
+                    {
+                        reader.ReadLine(); // skip this line and continue reading
+                    }
+                }
+                return "";
+            }
         }
     }
 }
